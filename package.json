@@ -1,0 +1,15 @@
+{
+  "name": "gameing",
+  "version": "1.0.0",
+  "description": "gameing",
+  "main": "Gameing.plugin.js",
+  "repository": {
+    "url": "https://github.com/biggestmannest/gameing.git",
+    "type": "git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "me",
+  "license": "ISC"
+}
