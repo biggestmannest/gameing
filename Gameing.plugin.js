@@ -5,7 +5,7 @@
  * @updateUrl https://raw.githubusercontent.com/biggestmannest/gameing/main/Gameing.plugin.js
  */
 
-module.exports = (() => {
+module.exports = ((t) => {
     const config = {
         "info": {
             "name": "Gameing",
@@ -14,7 +14,7 @@ module.exports = (() => {
                 "discord_id": "459815318932553730",
                 "github_username": "biggestmannest"
             } ],
-            "version": "43.43.43",
+            "version": "1.1.2",
             "description": "i am game(ing)",
             "github": "https://github.com/biggestmannest/gameing",
             "github_raw": "https://raw.githubusercontent.com/biggestmannest/gameing/main/Gameing.plugin.js"
@@ -62,9 +62,8 @@ module.exports = (() => {
 
     } : (([ Plugin, Api ]) => {
         const { Patcher, DiscordAPI, Settings, PluginUtilities } = Api;
-        let t;
 
-        const plugin = (Plugin, Api) => class NitroPerks extends Plugin {
+        const plugin = (Plugin, Api) => class Gameing extends Plugin {
             defaultSettings = {
                 "screenSharing": true,
                 "dev": false,
@@ -117,12 +116,19 @@ module.exports = (() => {
                 }
 
                 if (this.settings.dev) {
-                    t = BdApi.findModuleByProps([ "isDeveloper" ]);
-                    Object.defineProperty(t, "isDeveloper", { get: _ => 1, set: _ => _, configurable: true });
+                    console.log('[Gameing|DevMode]:', t);
+                    if (t) {
+                        t = BdApi.findModuleByProps([ "isDeveloper" ]);
+                        Object.defineProperty(t, "isDeveloper", { get: _ => 1, set: _ => _, configurable: true });
+                    }
                 }
             }
 
             onStart() {
+                if (!DiscordAPI.currentUser?.discordObject) {
+                    throw new Error('[Gameing]: Couldnt find `DiscordAPI.currentUser.discordObject`');
+                }
+
                 this.originalNitroStatus = DiscordAPI.currentUser.discordObject.premiumType;
                 this.saveAndUpdate();
                 DiscordAPI.currentUser.discordObject.premiumType = 2;
@@ -132,13 +138,15 @@ module.exports = (() => {
                 DiscordAPI.currentUser.discordObject.premiumType = this.originalNitroStatus;
                 Patcher.unpatchAll();
 
-                t && Object.defineProperty(t, "isDeveloper", {
-                    get: _ => 0,
-                    set: _ => {
-                        throw new Error("[Gameing PLugin]: Dev shit broke");
-                    },
-                    configurable: true
-                });
+                if (t) {
+                    t && Object.defineProperty(t, "isDeveloper", {
+                        get: _ => 0,
+                        set: _ => {
+                            throw new Error("[Gameing PLugin]: Dev shit broke");
+                        },
+                        configurable: true
+                    });
+                }
             }
         };
 
