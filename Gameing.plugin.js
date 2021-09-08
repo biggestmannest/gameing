@@ -60,7 +60,10 @@ module.exports = (() => {
 
         stop() { }
 
-    } : (([ Plugin, { Patcher, DiscordAPI, Settings, PluginUtilities } ]) => {
+    } : (([ Plugin, Api ]) => {
+        const { Patcher, DiscordAPI, Settings, PluginUtilities } = Api;
+        let t;
+
         const plugin = (Plugin, Api) => class NitroPerks extends Plugin {
             defaultSettings = {
                 "screenSharing": true,
@@ -142,3 +145,4 @@ module.exports = (() => {
         return plugin(Plugin, Api);
     })(global.ZeresPluginLibrary.buildPlugin(config));
 })();
+/*@end*/
